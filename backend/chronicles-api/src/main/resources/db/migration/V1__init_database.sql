@@ -1,0 +1,1 @@
+-- Initial database migration for Chronicles of Elia
