@@ -1,5 +1,7 @@
 package com.chroniclesofelia.api.auth.controller;
 
+import com.chroniclesofelia.api.auth.dto.LoginRequest;
+import com.chroniclesofelia.api.auth.dto.LoginResponse;
 import com.chroniclesofelia.api.auth.dto.RegisterRequest;
 import com.chroniclesofelia.api.auth.dto.RegisterResponse;
 import com.chroniclesofelia.api.auth.service.AuthService;
@@ -25,5 +27,14 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(
+            @Valid @RequestBody LoginRequest request
+    ) {
+        LoginResponse response = authService.login(request);
+
+        return ResponseEntity.ok(response);
     }
 }
