@@ -1,6 +1,8 @@
 package com.chroniclesofelia.api.auth.security;
 
 import com.chroniclesofelia.api.auth.entity.AppUser;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,8 +36,34 @@ public class JwtService {
                 .compact();
     }
 
+    public String extractSubject(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    public boolean isTokenValid(String token, AppUser user) {
+        try {
+            String email = extractSubject(token);
+            return email.equals(user.getEmail()) && !isTokenExpired(token);
+        } catch (JwtException | IllegalArgumentException exception) {
+            return false;
+        }
+    }
+
     public Long getExpirationInSeconds() {
         return jwtExpirationMs / 1000;
+    }
+
+    private boolean isTokenExpired(String token) {
+        Date expiration = extractAllClaims(token).getExpiration();
+        return expiration.before(new Date());
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private SecretKey getSigningKey() {
