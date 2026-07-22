@@ -1,88 +1,107 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-import { colors, radius, spacing, typography } from "../../constants/theme";
+import {
+  AppScreen,
+  DarkForestCard,
+  EliaGuideCard,
+  ParchmentCard,
+  PrimaryButton,
+} from "../../components";
+import { colors, spacing, typography } from "../../constants/theme";
 
 export function HomeScreen() {
   return (
-    <View style={styles.container}>
+    <AppScreen scroll>
       <Text style={styles.greeting}>Good evening, traveler ✦</Text>
-
       <Text style={styles.title}>Your learning path awaits</Text>
 
-      <View style={styles.card}>
+      <EliaGuideCard
+        title="Elia's tip"
+        message="Consistency is your magic. One small mission today still counts."
+      />
+
+      <DarkForestCard style={styles.statsCard}>
+        <View style={styles.statItem}>
+          <Text style={styles.statValue}>A2</Text>
+          <Text style={styles.statLabel}>Level</Text>
+        </View>
+
+        <View style={styles.statItem}>
+          <Text style={styles.statValue}>60</Text>
+          <Text style={styles.statLabel}>XP</Text>
+        </View>
+
+        <View style={styles.statItem}>
+          <Text style={styles.statValue}>1</Text>
+          <Text style={styles.statLabel}>Mission</Text>
+        </View>
+      </DarkForestCard>
+
+      <ParchmentCard style={styles.card}>
         <Text style={styles.cardLabel}>Current path</Text>
         <Text style={styles.cardTitle}>Dev Path · A2 Wanderer</Text>
         <Text style={styles.cardText}>
           Practice professional English through short missions, lessons and
           exercises.
         </Text>
-      </View>
+      </ParchmentCard>
 
-      <View style={styles.card}>
+      <ParchmentCard style={styles.card}>
         <Text style={styles.cardLabel}>Next mission</Text>
         <Text style={styles.cardTitle}>Professional Introduction</Text>
         <Text style={styles.cardText}>
           Learn how to introduce yourself as a junior developer.
         </Text>
-      </View>
+      </ParchmentCard>
 
-      <Pressable style={styles.primaryButton}>
-        <Text style={styles.primaryButtonText}>Open mission map</Text>
-      </Pressable>
-    </View>
+      <PrimaryButton title="Open mission map" onPress={() => {}} />
+    </AppScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.forestDark,
-    padding: spacing.xl,
-    justifyContent: "center",
-  },
   greeting: {
     ...typography.small,
     color: colors.dustyRose,
     marginBottom: spacing.sm,
   },
   title: {
-    ...typography.title,
+    ...typography.screenTitle,
     color: colors.parchment,
     marginBottom: spacing.xl,
   },
+  statsCard: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: spacing.lg,
+  },
+  statItem: {
+    alignItems: "center",
+    flex: 1,
+  },
+  statValue: {
+    ...typography.sectionTitle,
+    color: colors.gold,
+  },
+  statLabel: {
+    ...typography.small,
+    color: colors.parchment,
+  },
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius.lg,
-    padding: spacing.lg,
     marginBottom: spacing.md,
   },
   cardLabel: {
+    ...typography.label,
     color: colors.deepTeal,
-    fontSize: 13,
-    fontWeight: "700",
     marginBottom: spacing.xs,
   },
   cardTitle: {
+    ...typography.sectionTitle,
     color: colors.textDark,
-    fontSize: 20,
-    fontWeight: "700",
     marginBottom: spacing.sm,
   },
   cardText: {
-    color: colors.mutedText,
-    fontSize: 15,
-    lineHeight: 22,
-  },
-  primaryButton: {
-    backgroundColor: colors.dustyRose,
-    padding: spacing.md,
-    borderRadius: radius.full,
-    alignItems: "center",
-    marginTop: spacing.lg,
-  },
-  primaryButtonText: {
-    color: colors.forestDark,
-    fontWeight: "700",
-    fontSize: 16,
+    ...typography.body,
+    color: colors.textMuted,
   },
 });

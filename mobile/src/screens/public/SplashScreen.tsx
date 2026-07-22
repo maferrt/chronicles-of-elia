@@ -1,61 +1,51 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-
-import { colors, radius, spacing, typography } from "../../constants/theme";
+import { StyleSheet, Text, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+import { AppScreen, EliaGuideCard, PrimaryButton } from "../../components";
+import { colors, spacing, typography } from "../../constants/theme";
 import { RootStackParamList } from "../../navigation/navigation.types";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Splash">;
 
 export function SplashScreen({ navigation }: Props) {
   return (
-    <View style={styles.container}>
-      <View style={styles.glow} />
+    <AppScreen centered>
+      <View style={styles.hero}>
+        <Text style={styles.title}>Chronicles{"\n"}of Elia</Text>
 
-      <Text style={styles.logo}>✦</Text>
+        <Text style={styles.subtitle}>
+          Learn English through personalized quests.
+        </Text>
+      </View>
 
-      <Text style={styles.title}>Chronicles of Elia</Text>
+      <EliaGuideCard
+        title="Welcome, traveler"
+        message="I'm Elia. I'll guide you through lessons, missions and little victories in English."
+      />
 
-      <Text style={styles.subtitle}>
-        Learn English through personalized quests, guided by Elia.
-      </Text>
+      <View style={styles.actions}>
+        <PrimaryButton
+          title="Begin your journey"
+          onPress={() => navigation.navigate("Login")}
+        />
 
-      <Pressable
-        style={styles.primaryButton}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Text style={styles.primaryButtonText}>Start your journey</Text>
-      </Pressable>
-
-      <Pressable onPress={() => navigation.navigate("Register")}>
-        <Text style={styles.secondaryText}>Create an account</Text>
-      </Pressable>
-    </View>
+        <PrimaryButton
+          title="Create an account"
+          variant="ghost"
+          onPress={() => navigation.navigate("Register")}
+        />
+      </View>
+    </AppScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.forestDark,
+  hero: {
     alignItems: "center",
-    justifyContent: "center",
-    padding: spacing.xl,
-  },
-  glow: {
-    position: "absolute",
-    width: 260,
-    height: 260,
-    borderRadius: 130,
-    backgroundColor: colors.deepTeal,
-    opacity: 0.28,
-  },
-  logo: {
-    fontSize: 64,
-    color: colors.dustyRose,
-    marginBottom: spacing.md,
+    marginBottom: spacing.xl,
   },
   title: {
-    ...typography.title,
+    ...typography.screenTitle,
     color: colors.parchment,
     textAlign: "center",
     marginBottom: spacing.md,
@@ -63,26 +53,12 @@ const styles = StyleSheet.create({
   subtitle: {
     ...typography.subtitle,
     color: colors.parchment,
-    opacity: 0.85,
     textAlign: "center",
-    lineHeight: 26,
-    marginBottom: spacing.xl,
+    opacity: 0.9,
   },
-  primaryButton: {
-    backgroundColor: colors.dustyRose,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.xl,
-    borderRadius: radius.full,
-    marginBottom: spacing.lg,
-  },
-  primaryButtonText: {
-    color: colors.forestDark,
-    fontSize: 16,
-    fontWeight: "700",
-  },
-  secondaryText: {
-    color: colors.parchment,
-    fontSize: 15,
-    textDecorationLine: "underline",
+  actions: {
+    width: "100%",
+    gap: spacing.md,
+    marginTop: spacing.xl,
   },
 });
