@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { AppScreen, EliaGuideCard, PrimaryButton } from "../../components";
+import { AppScreen, PrimaryButton, ParchmentCard } from "../../components";
+import { eliaAssets } from "../../constants/eliaAssets";
 import { colors, spacing, typography } from "../../constants/theme";
 import { RootStackParamList } from "../../navigation/navigation.types";
 
@@ -9,8 +10,8 @@ type Props = NativeStackScreenProps<RootStackParamList, "Splash">;
 
 export function SplashScreen({ navigation }: Props) {
   return (
-    <AppScreen centered>
-      <View style={styles.hero}>
+    <AppScreen scroll contentStyle={styles.container}>
+      <View style={styles.header}>
         <Text style={styles.title}>Chronicles{"\n"}of Elia</Text>
 
         <Text style={styles.subtitle}>
@@ -18,10 +19,24 @@ export function SplashScreen({ navigation }: Props) {
         </Text>
       </View>
 
-      <EliaGuideCard
-        title="Welcome, traveler"
-        message="I'm Elia. I'll guide you through lessons, missions and little victories in English."
-      />
+      <View style={styles.eliaContainer}>
+        <View style={styles.glow} />
+
+        <Image
+          source={eliaAssets.wave}
+          style={styles.eliaImage}
+          resizeMode="contain"
+        />
+      </View>
+
+      <ParchmentCard style={styles.messageCard}>
+        <Text style={styles.messageTitle}>Welcome, traveler</Text>
+
+        <Text style={styles.messageText}>
+          I'm Elia. I'll guide you through lessons, missions and little
+          victories in English.
+        </Text>
+      </ParchmentCard>
 
       <View style={styles.actions}>
         <PrimaryButton
@@ -40,14 +55,20 @@ export function SplashScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  hero: {
+  container: {
+    justifyContent: "center",
+    paddingTop: spacing.xl,
+    paddingBottom: spacing.xl,
+  },
+  header: {
     alignItems: "center",
-    marginBottom: spacing.xl,
+    marginBottom: spacing.lg,
   },
   title: {
     ...typography.screenTitle,
     color: colors.parchment,
     textAlign: "center",
+    textTransform: "uppercase",
     marginBottom: spacing.md,
   },
   subtitle: {
@@ -56,9 +77,39 @@ const styles = StyleSheet.create({
     textAlign: "center",
     opacity: 0.9,
   },
+  eliaContainer: {
+    width: "100%",
+    height: 360,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: spacing.lg,
+  },
+  glow: {
+    position: "absolute",
+    width: 260,
+    height: 260,
+    borderRadius: 130,
+    backgroundColor: colors.glowGold,
+    opacity: 0.9,
+  },
+  eliaImage: {
+    width: "100%",
+    height: "100%",
+  },
+  messageCard: {
+    marginBottom: spacing.xl,
+  },
+  messageTitle: {
+    ...typography.label,
+    color: colors.forestDark,
+    marginBottom: spacing.sm,
+  },
+  messageText: {
+    ...typography.subtitle,
+    color: colors.textDark,
+  },
   actions: {
     width: "100%",
     gap: spacing.md,
-    marginTop: spacing.xl,
   },
 });

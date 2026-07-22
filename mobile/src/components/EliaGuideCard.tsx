@@ -1,5 +1,6 @@
 import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 
+import { eliaAssets, EliaVariant } from "../constants/eliaAssets";
 import { colors, radius, spacing, typography } from "../constants/theme";
 import { ParchmentCard } from "./ParchmentCard";
 
@@ -7,23 +8,25 @@ type EliaGuideCardProps = {
   title?: string;
   message: string;
   imageSource?: ImageSourcePropType;
+  eliaVariant?: EliaVariant;
 };
 
 export function EliaGuideCard({
   title = "Elia says",
   message,
   imageSource,
+  eliaVariant = "wave",
 }: EliaGuideCardProps) {
+  const selectedImage = imageSource ?? eliaAssets[eliaVariant];
+
   return (
     <ParchmentCard style={styles.card}>
       <View style={styles.content}>
-        {imageSource ? (
-          <Image source={imageSource} style={styles.image} resizeMode="contain" />
-        ) : (
-          <View style={styles.placeholder}>
-            <Text style={styles.placeholderText}>Elia</Text>
-          </View>
-        )}
+        <Image
+          source={selectedImage}
+          style={styles.image}
+          resizeMode="contain"
+        />
 
         <View style={styles.textContent}>
           <Text style={styles.title}>{title}</Text>
@@ -44,22 +47,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: 82,
-    height: 100,
-  },
-  placeholder: {
-    width: 72,
-    height: 72,
-    borderRadius: radius.full,
-    backgroundColor: colors.dustyRose,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: colors.borderGold,
-  },
-  placeholderText: {
-    ...typography.label,
-    color: colors.forestDark,
+    width: 96,
+    height: 116,
+    borderRadius: radius.md,
   },
   textContent: {
     flex: 1,

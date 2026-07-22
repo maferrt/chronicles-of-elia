@@ -16,6 +16,7 @@ export function HomeScreen() {
       <Text style={styles.title}>Your learning path awaits</Text>
 
       <EliaGuideCard
+        eliaVariant="teaching"
         title="Elia's tip"
         message="Consistency is your magic. One small mission today still counts."
       />
