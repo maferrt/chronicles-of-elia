@@ -1,115 +1,229 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, ImageBackground, Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { AppScreen, PrimaryButton, ParchmentCard } from "../../components";
 import { eliaAssets } from "../../constants/eliaAssets";
-import { colors, spacing, typography } from "../../constants/theme";
+import { colors, fonts } from "../../constants/theme";
 import { RootStackParamList } from "../../navigation/navigation.types";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Splash">;
 
+const forestSplash = require("../../assets/images/backgrounds/forest-splash.png");
+
 export function SplashScreen({ navigation }: Props) {
+  const { width, height } = useWindowDimensions();
+
+  const eliaHeight = height * 0.5;
+  const eliaWidth = width * 0.9;
+
   return (
-    <AppScreen scroll contentStyle={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Chronicles{"\n"}of Elia</Text>
+    <ImageBackground
+      source={forestSplash}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <LinearGradient
+        colors={[
+          "rgba(6, 29, 22, 0.42)",
+          "rgba(6, 29, 22, 0.12)",
+          "rgba(6, 29, 22, 0.24)",
+          "rgba(6, 29, 22, 0.72)",
+        ]}
+        locations={[0, 0.28, 0.58, 1]}
+        style={styles.overlay}
+      />
 
-        <Text style={styles.subtitle}>
-          Learn English through personalized quests.
-        </Text>
-      </View>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.content}>
+          <View style={styles.titleArea}>
+            <Text style={styles.title}>Chronicles{"\n"}of Elia</Text>
 
-      <View style={styles.eliaContainer}>
-        <View style={styles.glow} />
+            <Text style={styles.subtitle}>
+              Learn English through personalized quests.
+            </Text>
+          </View>
 
-        <Image
-          source={eliaAssets.wave}
-          style={styles.eliaImage}
-          resizeMode="contain"
-        />
-      </View>
+          <Image
+            source={eliaAssets.wave}
+            resizeMode="contain"
+            style={[
+              styles.elia,
+              {
+                width: eliaWidth,
+                height: eliaHeight,
+                top: height * 0.255,
+              },
+            ]}
+          />
 
-      <ParchmentCard style={styles.messageCard}>
-        <Text style={styles.messageTitle}>Welcome, traveler</Text>
+          <View style={styles.bottomArea}>
+            <Pressable
+              style={({ pressed }) => [
+                styles.primaryButton,
+                pressed && styles.pressed,
+              ]}
+              onPress={() => navigation.navigate("Login")}
+            >
+              <Text style={styles.primaryButtonText}>Begin Your Journey</Text>
+            </Pressable>
 
-        <Text style={styles.messageText}>
-          I'm Elia. I'll guide you through lessons, missions and little
-          victories in English.
-        </Text>
-      </ParchmentCard>
+            <Text style={styles.bottomTagline}>
+              Learn English. Live the Adventure.
+            </Text>
 
-      <View style={styles.actions}>
-        <PrimaryButton
-          title="Begin your journey"
-          onPress={() => navigation.navigate("Login")}
-        />
+            <View style={styles.dots}>
+              <View style={[styles.dot, styles.activeDot]} />
+              <View style={styles.dot} />
+              <View style={styles.dot} />
+              <View style={styles.dot} />
+            </View>
 
-        <PrimaryButton
-          title="Create an account"
-          variant="ghost"
-          onPress={() => navigation.navigate("Register")}
-        />
-      </View>
-    </AppScreen>
+            <Pressable onPress={() => navigation.navigate("Register")}>
+              <Text style={styles.secondaryLink}>Create an account</Text>
+            </Pressable>
+          </View>
+        </View>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    paddingTop: spacing.xl,
-    paddingBottom: spacing.xl,
+  background: {
+    flex: 1,
+    backgroundColor: colors.forestDark,
   },
-  header: {
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  safeArea: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+    position: "relative",
+    paddingHorizontal: 28,
+  },
+  titleArea: {
     alignItems: "center",
-    marginBottom: spacing.lg,
+    paddingTop: 28,
+    zIndex: 2,
   },
   title: {
-    ...typography.screenTitle,
+    fontFamily: fonts.title,
+    fontSize: 45,
+    lineHeight: 50,
     color: colors.parchment,
     textAlign: "center",
-    textTransform: "uppercase",
-    marginBottom: spacing.md,
+    textTransform: "capitalize",
+    textShadowColor: "rgba(0, 0, 0, 0.45)",
+    textShadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    textShadowRadius: 8,
   },
   subtitle: {
-    ...typography.subtitle,
+    marginTop: 18,
+    fontFamily: fonts.subtitle,
+    fontSize: 21,
+    lineHeight: 28,
     color: colors.parchment,
     textAlign: "center",
-    opacity: 0.9,
+    textShadowColor: "rgba(0, 0, 0, 0.55)",
+    textShadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    textShadowRadius: 5,
   },
-  eliaContainer: {
+  elia: {
+    position: "absolute",
+    alignSelf: "center",
+    zIndex: 1,
+  },
+  bottomArea: {
+    position: "absolute",
+    left: 28,
+    right: 28,
+    bottom: 34,
+    alignItems: "center",
+    zIndex: 3,
+  },
+  primaryButton: {
     width: "100%",
-    height: 360,
+    minHeight: 64,
+    borderRadius: 22,
+    backgroundColor: "rgba(10, 51, 35, 0.92)",
+    borderWidth: 2,
+    borderColor: colors.sage,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: spacing.lg,
+    shadowColor: colors.forestDeep,
+    shadowOpacity: 0.45,
+    shadowRadius: 12,
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    elevation: 6,
   },
-  glow: {
-    position: "absolute",
-    width: 260,
-    height: 260,
-    borderRadius: 130,
-    backgroundColor: colors.glowGold,
-    opacity: 0.9,
+  primaryButtonText: {
+    fontFamily: fonts.titleRegular,
+    fontSize: 22,
+    color: colors.parchment,
+    textAlign: "center",
+    textShadowColor: "rgba(0, 0, 0, 0.45)",
+    textShadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    textShadowRadius: 3,
   },
-  eliaImage: {
-    width: "100%",
-    height: "100%",
+  pressed: {
+    opacity: 0.86,
+    transform: [{ scale: 0.98 }],
   },
-  messageCard: {
-    marginBottom: spacing.xl,
+  bottomTagline: {
+    marginTop: 24,
+    fontFamily: fonts.subtitle,
+    fontSize: 18,
+    color: colors.parchment,
+    textAlign: "center",
+    textShadowColor: "rgba(0, 0, 0, 0.55)",
+    textShadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    textShadowRadius: 4,
   },
-  messageTitle: {
-    ...typography.label,
-    color: colors.forestDark,
-    marginBottom: spacing.sm,
+  dots: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 34,
+    marginBottom: 22,
   },
-  messageText: {
-    ...typography.subtitle,
-    color: colors.textDark,
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: "rgba(247, 244, 213, 0.35)",
   },
-  actions: {
-    width: "100%",
-    gap: spacing.md,
+  activeDot: {
+    backgroundColor: colors.parchment,
+  },
+  secondaryLink: {
+    fontFamily: fonts.titleRegular,
+    fontSize: 16,
+    color: colors.parchment,
+    textTransform: "uppercase",
+    textDecorationLine: "underline",
+    textShadowColor: "rgba(0, 0, 0, 0.5)",
+    textShadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    textShadowRadius: 3,
   },
 });

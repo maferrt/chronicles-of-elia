@@ -28,12 +28,7 @@ export function PrimaryButton({
         disabled && styles.disabled,
       ]}
     >
-      <Text
-        style={[
-          styles.text,
-          variant === "ghost" && styles.ghostText,
-        ]}
-      >
+      <Text style={[styles.text, variant === "ghost" && styles.ghostText]}>
         {title}
       </Text>
     </Pressable>
@@ -43,7 +38,7 @@ export function PrimaryButton({
 const styles = StyleSheet.create({
   base: {
     width: "100%",
-    minHeight: 52,
+    minHeight: 58,
     borderRadius: radius.full,
     alignItems: "center",
     justifyContent: "center",
@@ -51,12 +46,12 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
   },
   primary: {
-    backgroundColor: colors.dustyRose,
-    borderWidth: 1,
-    borderColor: colors.borderGold,
+    backgroundColor: "rgba(49, 76, 40, 0.94)",
+    borderWidth: 1.5,
+    borderColor: colors.gold,
   },
   secondary: {
-    backgroundColor: colors.moss,
+    backgroundColor: colors.dustyRose,
     borderWidth: 1,
     borderColor: colors.borderGold,
   },
@@ -65,16 +60,23 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: fonts.titleRegular,
-    fontSize: 16,
-    color: colors.forestDark,
+    fontSize: 17,
+    color: colors.parchment,
     textAlign: "center",
+    textTransform: "uppercase",
   },
   ghostText: {
     color: colors.parchment,
     textDecorationLine: "underline",
+    textShadowColor: "rgba(0, 0, 0, 0.55)",
+    textShadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    textShadowRadius: 3,
   },
   pressed: {
-    opacity: 0.82,
+    opacity: 0.86,
     transform: [{ scale: 0.98 }],
   },
   disabled: {

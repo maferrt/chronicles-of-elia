@@ -14,18 +14,18 @@ export function ParchmentCard({ children, style }: ParchmentCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.parchmentSoft,
-    borderRadius: radius.lg,
+    backgroundColor: colors.parchment,
+    borderRadius: radius.xl,
     borderWidth: 1,
-    borderColor: colors.borderGold,
-    padding: spacing.lg,
+    borderColor: colors.parchmentDark,
+    padding: spacing.xl,
     shadowColor: colors.forestDeep,
-    shadowOpacity: 0.25,
-    shadowRadius: 12,
+    shadowOpacity: 0.28,
+    shadowRadius: 14,
     shadowOffset: {
       width: 0,
-      height: 6,
+      height: 8,
     },
-    elevation: 4,
+    elevation: 5,
   },
 });

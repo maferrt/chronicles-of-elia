@@ -1,13 +1,14 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import {
   AppScreen,
   ParchmentCard,
   PrimaryButton,
+  ScreenHeader,
   TextField,
 } from "../../components";
-import { colors, spacing, typography } from "../../constants/theme";
+import { spacing } from "../../constants/theme";
 import { RootStackParamList } from "../../navigation/navigation.types";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
@@ -15,12 +16,10 @@ type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 export function LoginScreen({ navigation }: Props) {
   return (
     <AppScreen scroll contentStyle={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Welcome back</Text>
-        <Text style={styles.subtitle}>
-          Continue your learning path with Elia.
-        </Text>
-      </View>
+      <ScreenHeader
+        title="Welcome back"
+        subtitle="Continue your learning path with Elia."
+      />
 
       <ParchmentCard style={styles.card}>
         <View style={styles.form}>
@@ -57,20 +56,8 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
   },
-  header: {
-    marginBottom: spacing.xl,
-  },
-  title: {
-    ...typography.screenTitle,
-    color: colors.parchment,
-    marginBottom: spacing.sm,
-  },
-  subtitle: {
-    ...typography.subtitle,
-    color: colors.parchment,
-  },
   card: {
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xl,
   },
   form: {
     gap: spacing.md,

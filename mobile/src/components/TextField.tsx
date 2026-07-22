@@ -7,12 +7,7 @@ type TextFieldProps = TextInputProps & {
   error?: string;
 };
 
-export function TextField({
-  label,
-  error,
-  style,
-  ...textInputProps
-}: TextFieldProps) {
+export function TextField({ label, error, style, ...textInputProps }: TextFieldProps) {
   return (
     <View style={styles.container}>
       {label ? <Text style={styles.label}>{label}</Text> : null}
@@ -35,16 +30,17 @@ const styles = StyleSheet.create({
   label: {
     ...typography.label,
     color: colors.forestDark,
+    textTransform: "uppercase",
   },
   input: {
-    minHeight: 52,
-    backgroundColor: colors.parchmentSoft,
-    borderRadius: radius.md,
+    minHeight: 58,
+    backgroundColor: "rgba(247, 244, 213, 0.5)",
+    borderRadius: radius.lg,
     borderWidth: 1,
     borderColor: colors.parchmentDark,
     paddingHorizontal: spacing.md,
     fontFamily: fonts.body,
-    fontSize: 16,
+    fontSize: 17,
     color: colors.textDark,
   },
   error: {

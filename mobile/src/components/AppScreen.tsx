@@ -9,6 +9,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ForestBackground } from "./ForestBackground";
 
 import { colors, spacing } from "../constants/theme";
 
@@ -38,30 +39,32 @@ export function AppScreen({
   );
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView
-        style={styles.keyboardView}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-      >
-        {scroll ? (
-          <ScrollView
-            contentContainerStyle={styles.scrollContent}
-            showsVerticalScrollIndicator={false}
-          >
-            {content}
-          </ScrollView>
-        ) : (
-          content
-        )}
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <ForestBackground>
+      <SafeAreaView style={styles.safeArea}>
+        <KeyboardAvoidingView
+          style={styles.keyboardView}
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+        >
+          {scroll ? (
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              showsVerticalScrollIndicator={false}
+            >
+              {content}
+            </ScrollView>
+          ) : (
+            content
+          )}
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </ForestBackground>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: colors.forestDark,
+    backgroundColor: "transparent",
   },
   keyboardView: {
     flex: 1,

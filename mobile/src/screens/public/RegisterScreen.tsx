@@ -1,13 +1,14 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import {
   AppScreen,
   ParchmentCard,
   PrimaryButton,
+  ScreenHeader,
   TextField,
 } from "../../components";
-import { colors, spacing, typography } from "../../constants/theme";
+import { spacing } from "../../constants/theme";
 import { RootStackParamList } from "../../navigation/navigation.types";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Register">;
@@ -15,16 +16,17 @@ type Props = NativeStackScreenProps<RootStackParamList, "Register">;
 export function RegisterScreen({ navigation }: Props) {
   return (
     <AppScreen scroll contentStyle={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Begin your chronicle</Text>
-        <Text style={styles.subtitle}>
-          Create your account and prepare your first path.
-        </Text>
-      </View>
+      <ScreenHeader
+        title="Begin your chronicle"
+        subtitle="Create your account and prepare your first path."
+      />
 
       <ParchmentCard style={styles.card}>
         <View style={styles.form}>
-          <TextField label="Full name" placeholder="María Fernanda Rodríguez" />
+          <TextField
+            label="Full name"
+            placeholder="María Fernanda Rodríguez"
+          />
 
           <TextField
             label="Email"
@@ -59,20 +61,8 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
   },
-  header: {
-    marginBottom: spacing.xl,
-  },
-  title: {
-    ...typography.screenTitle,
-    color: colors.parchment,
-    marginBottom: spacing.sm,
-  },
-  subtitle: {
-    ...typography.subtitle,
-    color: colors.parchment,
-  },
   card: {
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xl,
   },
   form: {
     gap: spacing.md,
