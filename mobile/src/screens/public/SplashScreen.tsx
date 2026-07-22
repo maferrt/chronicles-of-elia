@@ -1,4 +1,13 @@
-import { Image, ImageBackground, Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { useState } from "react";
+import {
+  Image,
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -11,11 +20,55 @@ type Props = NativeStackScreenProps<RootStackParamList, "Splash">;
 
 const forestSplash = require("../../assets/images/backgrounds/forest-splash.png");
 
+const onboardingSlides = [
+  {
+    id: 1,
+    title: "Chronicles\nof Elia",
+    subtitle: "Learn English through personalized quests.",
+    benefit: "Discover a magical way to practice English with guidance, purpose and story.",
+    buttonText: "Next",
+  },
+  {
+    id: 2,
+    title: "Your path,\nyour story",
+    subtitle: "Learn according to your level, goals and profession.",
+    benefit: "Choose a path like Dev, Chef or Artist and receive missions that match your real-life context.",
+    buttonText: "Next",
+  },
+  {
+    id: 3,
+    title: "Practice with\npurpose",
+    subtitle: "Complete lessons, vocabulary and exercises.",
+    benefit: "Every mission helps you practice grammar, writing, vocabulary and communication through useful situations.",
+    buttonText: "Next",
+  },
+  {
+    id: 4,
+    title: "Grow with\nElia",
+    subtitle: "Track your progress and unlock your learning journey.",
+    benefit: "Elia will guide you step by step while you build confidence and move through your English path.",
+    buttonText: "Begin your journey",
+  },
+];
+
 export function SplashScreen({ navigation }: Props) {
   const { width, height } = useWindowDimensions();
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
+  const currentSlide = onboardingSlides[currentSlideIndex];
+  const isLastSlide = currentSlideIndex === onboardingSlides.length - 1;
 
   const eliaHeight = height * 0.5;
   const eliaWidth = width * 0.9;
+
+  function handlePrimaryAction() {
+    if (isLastSlide) {
+      navigation.navigate("Register");
+      return;
+    }
+
+    setCurrentSlideIndex((previousIndex) => previousIndex + 1);
+  }
 
   return (
     <ImageBackground
@@ -37,11 +90,9 @@ export function SplashScreen({ navigation }: Props) {
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.content}>
           <View style={styles.titleArea}>
-            <Text style={styles.title}>Chronicles{"\n"}of Elia</Text>
+            <Text style={styles.title}>{currentSlide.title}</Text>
 
-            <Text style={styles.subtitle}>
-              Learn English through personalized quests.
-            </Text>
+            <Text style={styles.subtitle}>{currentSlide.subtitle}</Text>
           </View>
 
           <Image
@@ -52,36 +103,42 @@ export function SplashScreen({ navigation }: Props) {
               {
                 width: eliaWidth,
                 height: eliaHeight,
-                top: height * 0.255,
+                top: height * 0.25,
               },
             ]}
           />
 
           <View style={styles.bottomArea}>
+            <Text style={styles.benefitText}>{currentSlide.benefit}</Text>
+
             <Pressable
               style={({ pressed }) => [
                 styles.primaryButton,
                 pressed && styles.pressed,
               ]}
-              onPress={() => navigation.navigate("Login")}
+              onPress={handlePrimaryAction}
             >
-              <Text style={styles.primaryButtonText}>Begin Your Journey</Text>
+              <Text style={styles.primaryButtonText}>
+                {currentSlide.buttonText}
+              </Text>
             </Pressable>
-
-            <Text style={styles.bottomTagline}>
-              Learn English. Live the Adventure.
-            </Text>
 
             <View style={styles.dots}>
-              <View style={[styles.dot, styles.activeDot]} />
-              <View style={styles.dot} />
-              <View style={styles.dot} />
-              <View style={styles.dot} />
-            </View>
+              {onboardingSlides.map((slide, index) => {
+                const isActive = index === currentSlideIndex;
 
-            <Pressable onPress={() => navigation.navigate("Register")}>
-              <Text style={styles.secondaryLink}>Create an account</Text>
-            </Pressable>
+                return (
+                  <Pressable
+                    key={slide.id}
+                    onPress={() => setCurrentSlideIndex(index)}
+                    style={[
+                      styles.dot,
+                      isActive && styles.activeDot,
+                    ]}
+                  />
+                );
+              })}
+            </View>
           </View>
         </View>
       </SafeAreaView>
@@ -151,6 +208,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     zIndex: 3,
   },
+  benefitText: {
+    marginBottom: 24,
+    fontFamily: fonts.subtitle,
+    fontSize: 19,
+    lineHeight: 26,
+    color: colors.parchment,
+    textAlign: "center",
+    textShadowColor: "rgba(0, 0, 0, 0.7)",
+    textShadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    textShadowRadius: 5,
+  },
   primaryButton: {
     width: "100%",
     minHeight: 64,
@@ -174,6 +245,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: colors.parchment,
     textAlign: "center",
+    textTransform: "uppercase",
     textShadowColor: "rgba(0, 0, 0, 0.45)",
     textShadowOffset: {
       width: 0,
@@ -185,24 +257,10 @@ const styles = StyleSheet.create({
     opacity: 0.86,
     transform: [{ scale: 0.98 }],
   },
-  bottomTagline: {
-    marginTop: 24,
-    fontFamily: fonts.subtitle,
-    fontSize: 18,
-    color: colors.parchment,
-    textAlign: "center",
-    textShadowColor: "rgba(0, 0, 0, 0.55)",
-    textShadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    textShadowRadius: 4,
-  },
   dots: {
     flexDirection: "row",
     gap: 10,
-    marginTop: 34,
-    marginBottom: 22,
+    marginTop: 28,
   },
   dot: {
     width: 10,
@@ -212,18 +270,5 @@ const styles = StyleSheet.create({
   },
   activeDot: {
     backgroundColor: colors.parchment,
-  },
-  secondaryLink: {
-    fontFamily: fonts.titleRegular,
-    fontSize: 16,
-    color: colors.parchment,
-    textTransform: "uppercase",
-    textDecorationLine: "underline",
-    textShadowColor: "rgba(0, 0, 0, 0.5)",
-    textShadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    textShadowRadius: 3,
   },
 });
