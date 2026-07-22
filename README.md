@@ -6,26 +6,43 @@ The app adapts each learning path according to the user's English level, profess
 
 ## Project Status
 
-This project is currently in the planning, documentation and initial development phase.
+This project is currently in active MVP development.
+
+The backend MVP is functional and includes authentication, learning profiles, diagnostic flow, personalized missions, lessons, exercises and progress tracking.
 
 Current progress:
 
 - Product concept defined
 - MVP scope defined
-- Pedagogical model in progress
-- Initial MVP content plan in progress
+- Pedagogical model documented
+- MVP content plan documented
 - Technical stack selected
-- Initial repository structure created
-- Backend base created
+- Repository structure created
 - PostgreSQL configured with Docker
 - Flyway migrations configured
+- Java + Spring Boot backend initialized
 - JWT authentication implemented
 - User registration and login implemented
 - Protected routes implemented
+- CORS configured for frontend integration
 - Initial catalogs implemented
 - Learning profile endpoints implemented
+- Initial diagnostic flow implemented
+- Mission, lesson, vocabulary and exercise data model implemented
+- Initial learning content seeded
+- Exercise submission endpoint implemented
+- Mission progress tracking implemented
+- General progress endpoint implemented
+- API endpoint reference documented
 - UI/UX visual base defined with a fantasy forest RPG style
-- Mobile app development pending
+- Mobile app development ready to start
+
+Next development phase:
+
+- Build the mobile frontend with Expo, React Native and TypeScript
+- Connect authentication flow with the backend
+- Build onboarding, diagnostic, dashboard, mission map and lesson screens
+- Integrate progress and exercise submission with the mobile UI
 
 ## Concept
 
