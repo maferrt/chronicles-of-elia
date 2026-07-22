@@ -29,6 +29,40 @@ Chronicles of Elia combines:
 - AI-assisted practice and feedback
 - Pedagogical structure based on real learning goals
 
+## Pedagogical Foundation
+
+Chronicles of Elia is based on a CEFR-inspired progression model.
+
+Each English level defines the linguistic difficulty, while each professional path defines the context, vocabulary, examples and final communicative tasks.
+
+The app does not treat one mission as mastery of a level. Instead, each mission represents a small communicative objective within a long-term learning path.
+
+For internal tracking, each CEFR-inspired level is treated as a long-term journey with an estimated target of 500 study hours.
+
+```text
+CEFR-inspired level = language difficulty
+Professional path = learning context
+Mission = communicative objective
+Progress = accumulated study, practice and performance
+```
+
+This allows the app to teach real English structures while adapting examples and tasks to the user's professional context.
+
+For example, an A2 learner can practice present simple and routines through different professional paths:
+
+```text
+DEV:
+I usually write documentation.
+
+CHEF:
+I usually prepare the ingredients.
+
+ARTIST:
+I usually sketch ideas.
+```
+
+The grammar level remains appropriate to A2, but the context changes according to the learner's profile.
+
 ## Visual Concept
 
 The app is inspired by a fantasy forest adventure. Elia is the guide who accompanies the player through missions, lessons and challenges.

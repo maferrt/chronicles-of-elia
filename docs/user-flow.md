@@ -12,13 +12,32 @@ The main user journey for the MVP is:
 6. The user selects interests and learning goals.
 7. The user completes an initial diagnostic.
 8. The system assigns a starting level.
-9. The system creates a basic learning path.
+9. The system creates a basic CEFR-inspired learning path based on the user's level, profession, goals and interests.
 10. The user enters the dashboard.
 11. The user opens the first mission.
 12. The user completes the first lesson.
 13. The user answers the first exercise.
 14. The system saves progress.
 15. The user sees updated XP, progress and next mission.
+
+## Learning Flow Logic
+
+The system creates a basic CEFR-inspired learning path based on the user's level, profession, goals and interests.
+
+Each mission follows this structure:
+
+1. Mission objective
+2. Short lesson
+3. Contextualized vocabulary
+4. Examples
+5. Guided practice
+6. Final task
+7. Feedback
+8. Progress update
+
+The mission is not equivalent to full mastery of a level.
+
+Instead, each mission represents one small communicative objective inside a long-term CEFR-inspired level journey.
 
 ## Public Screens
 

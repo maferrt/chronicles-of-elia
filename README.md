@@ -12,10 +12,20 @@ Current progress:
 
 - Product concept defined
 - MVP scope defined
+- Pedagogical model in progress
+- Initial MVP content plan in progress
 - Technical stack selected
 - Initial repository structure created
-- UI/UX prototype planned
-- Backend and mobile app development pending
+- Backend base created
+- PostgreSQL configured with Docker
+- Flyway migrations configured
+- JWT authentication implemented
+- User registration and login implemented
+- Protected routes implemented
+- Initial catalogs implemented
+- Learning profile endpoints implemented
+- UI/UX visual base defined with a fantasy forest RPG style
+- Mobile app development pending
 
 ## Concept
 
@@ -219,6 +229,8 @@ Project documentation is organized inside the `docs/` folder:
 - `mvp-scope.md`: first version scope and limitations.
 - `tech-stack.md`: technologies and architecture.
 - `user-flow.md`: main app navigation and user journey.
+- `pedagogical-model.md`: CEFR-inspired learning model, mission structure and progress logic.
+- `mvp-content-plan.md`: initial educational content seed for the MVP.
 
 ## Planned Backend Modules
 
@@ -348,6 +360,35 @@ Chronicles of Elia uses RPG elements to support learning:
 | Boss battle | Integrative challenge |
 | Guide | Elia |
 
+## Pedagogical Model
+
+Chronicles of Elia uses a CEFR-inspired pedagogical structure.
+
+The learner's English level defines the language difficulty, while the professional path defines the context, examples, vocabulary and final tasks.
+
+For internal progress tracking, each CEFR-inspired level is treated as a long-term journey with an estimated target of 500 study hours.
+
+```text
+1 level = 500 study hours
+500 hours = 30,000 study minutes
+```
+
+A mission does not represent full mastery of a level.
+
+A mission represents a small communicative objective inside a larger learning path.
+
+Example:
+
+```text
+Level: A2
+Path: DEV
+Mission: Professional Introduction
+Function: Giving personal information
+Grammar: Verb to be + present simple
+Vocabulary: role, project, backend, frontend, team
+Final task: Write a short professional introduction
+```
+
 ## Current Development Roadmap
 
 ### Phase 1: Repository and Planning
@@ -373,12 +414,16 @@ Chronicles of Elia uses RPG elements to support learning:
 - Add JWT authentication
 - Create learning profile flow
 
-### Phase 4: Diagnostic and Learning Path
+### Phase 4: Pedagogical Model, Content and Learning Path
 
+- Define CEFR-inspired pedagogical model
+- Define study-hour progress logic
+- Define initial MVP content seed
 - Create diagnostic questions
 - Save diagnostic answers
 - Generate basic learning path
 - Show user learning path
+- Add initial missions, lessons and exercises
 
 ### Phase 5: Mobile App
 
