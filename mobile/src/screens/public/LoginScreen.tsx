@@ -38,7 +38,7 @@ export function LoginScreen({ navigation }: Props) {
 
           <PrimaryButton
             title="Log in"
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.replace("MainApp")}
           />
         </View>
       </ParchmentCard>

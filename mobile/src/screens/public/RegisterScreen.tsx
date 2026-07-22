@@ -43,7 +43,7 @@ export function RegisterScreen({ navigation }: Props) {
 
           <PrimaryButton
             title="Create account"
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.replace("MainApp")}
           />
         </View>
       </ParchmentCard>

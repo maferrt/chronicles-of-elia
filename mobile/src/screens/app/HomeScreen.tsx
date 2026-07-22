@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
 import {
   AppScreen,
@@ -6,14 +7,20 @@ import {
   EliaGuideCard,
   ParchmentCard,
   PrimaryButton,
+  ScreenHeader,
 } from "../../components";
+import { AppTabParamList } from "../../navigation/navigation.types";
 import { colors, spacing, typography } from "../../constants/theme";
 
-export function HomeScreen() {
+type Props = BottomTabScreenProps<AppTabParamList, "Home">;
+
+export function HomeScreen({ navigation }: Props) {
   return (
-    <AppScreen scroll>
-      <Text style={styles.greeting}>Good evening, traveler ✦</Text>
-      <Text style={styles.title}>Your learning path awaits</Text>
+    <AppScreen scroll contentStyle={styles.container}>
+      <ScreenHeader
+        eyebrow="Good evening, traveler ✦"
+        title="Your learning path awaits"
+      />
 
       <EliaGuideCard
         eliaVariant="teaching"
@@ -55,21 +62,17 @@ export function HomeScreen() {
         </Text>
       </ParchmentCard>
 
-      <PrimaryButton title="Open mission map" onPress={() => {}} />
+      <PrimaryButton
+        title="Open mission map"
+        onPress={() => navigation.navigate("Map")}
+      />
     </AppScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  greeting: {
-    ...typography.small,
-    color: colors.dustyRose,
-    marginBottom: spacing.sm,
-  },
-  title: {
-    ...typography.screenTitle,
-    color: colors.parchment,
-    marginBottom: spacing.xl,
+  container: {
+    paddingBottom: 120,
   },
   statsCard: {
     flexDirection: "row",
