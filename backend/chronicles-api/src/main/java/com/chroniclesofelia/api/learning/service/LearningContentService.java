@@ -6,15 +6,21 @@ import com.chroniclesofelia.api.learning.entity.*;
 import com.chroniclesofelia.api.learning.repository.*;
 import com.chroniclesofelia.api.profiles.entity.UserProfile;
 import com.chroniclesofelia.api.profiles.repository.UserProfileRepository;
+import com.chroniclesofelia.api.progress.entity.UserMissionProgress;
+import com.chroniclesofelia.api.progress.repository.UserMissionProgressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class LearningContentService {
+
+    private static final String STATUS_NOT_STARTED = "NOT_STARTED";
 
     private final UserProfileRepository userProfileRepository;
     private final MissionRepository missionRepository;
@@ -22,6 +28,7 @@ public class LearningContentService {
     private final VocabularyItemRepository vocabularyItemRepository;
     private final ExerciseRepository exerciseRepository;
     private final ExerciseOptionRepository exerciseOptionRepository;
+    private final UserMissionProgressRepository userMissionProgressRepository;
 
     @Transactional(readOnly = true)
     public List<MissionSummaryResponse> getMissionsForCurrentUser(AppUser currentUser) {
@@ -37,7 +44,7 @@ public class LearningContentService {
         );
 
         return missions.stream()
-                .map(this::toMissionSummaryResponse)
+                .map(mission -> toMissionSummaryResponse(mission, currentUser.getId()))
                 .toList();
     }
 
@@ -89,7 +96,37 @@ public class LearningContentService {
         );
     }
 
-    private MissionSummaryResponse toMissionSummaryResponse(Mission mission) {
+    private MissionSummaryResponse toMissionSummaryResponse(
+            Mission mission,
+            Long userId
+    ) {
+        Optional<UserMissionProgress> progressOptional = userMissionProgressRepository
+                .findByUserIdAndMissionId(userId, mission.getId());
+
+        String progressStatus = progressOptional
+                .map(UserMissionProgress::getStatus)
+                .orElse(STATUS_NOT_STARTED);
+
+        Integer studyMinutesCompleted = progressOptional
+                .map(UserMissionProgress::getStudyMinutesCompleted)
+                .orElse(0);
+
+        Integer xpEarned = progressOptional
+                .map(UserMissionProgress::getXpEarned)
+                .orElse(0);
+
+        LocalDateTime startedAt = progressOptional
+                .map(UserMissionProgress::getStartedAt)
+                .orElse(null);
+
+        LocalDateTime completedAt = progressOptional
+                .map(UserMissionProgress::getCompletedAt)
+                .orElse(null);
+
+        LocalDateTime lastAccessedAt = progressOptional
+                .map(UserMissionProgress::getLastAccessedAt)
+                .orElse(null);
+
         return new MissionSummaryResponse(
                 mission.getId(),
                 mission.getTitle(),
@@ -108,7 +145,13 @@ public class LearningContentService {
                 mission.getMainSkill(),
                 mission.getEstimatedMinutes(),
                 mission.getXpReward(),
-                mission.getOrderIndex()
+                mission.getOrderIndex(),
+                progressStatus,
+                studyMinutesCompleted,
+                xpEarned,
+                startedAt,
+                completedAt,
+                lastAccessedAt
         );
     }
 

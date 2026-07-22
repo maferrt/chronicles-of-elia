@@ -1,5 +1,7 @@
 package com.chroniclesofelia.api.learning.dto;
 
+import java.time.LocalDateTime;
+
 public record MissionSummaryResponse(
         Long id,
         String title,
@@ -18,6 +20,13 @@ public record MissionSummaryResponse(
         String mainSkill,
         Integer estimatedMinutes,
         Integer xpReward,
-        Integer orderIndex
+        Integer orderIndex,
+
+        String progressStatus,
+        Integer studyMinutesCompleted,
+        Integer xpEarned,
+        LocalDateTime startedAt,
+        LocalDateTime completedAt,
+        LocalDateTime lastAccessedAt
 ) {
 }
