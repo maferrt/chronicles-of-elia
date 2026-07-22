@@ -20,4 +20,9 @@ public interface UserExerciseAnswerRepository extends JpaRepository<UserExercise
             Long userId,
             Long exerciseId
     );
+
+    boolean existsByUserIdAndExerciseIdAndIsCorrectTrue(
+            Long userId,
+            Long exerciseId
+    );
 }
