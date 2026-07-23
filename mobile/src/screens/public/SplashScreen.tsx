@@ -15,6 +15,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { eliaAssets, EliaVariant } from "../../constants/eliaAssets";
 import { colors, fonts } from "../../constants/theme";
 import { RootStackParamList } from "../../navigation/navigation.types";
+import { useAuth } from "../../context/AuthContext";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Splash">;
 
@@ -79,6 +80,7 @@ const onboardingSlides: OnboardingSlide[] = [
 ];
 
 export function SplashScreen({ navigation }: Props) {
+  const { completeOnboarding } = useAuth();
   const { width, height } = useWindowDimensions();
 
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -146,8 +148,9 @@ export function SplashScreen({ navigation }: Props) {
     });
   }
 
-  function handlePrimaryAction() {
+  async function handlePrimaryAction() {
     if (isLastSlide) {
+      await completeOnboarding();
       navigation.navigate("Register");
       return;
     }

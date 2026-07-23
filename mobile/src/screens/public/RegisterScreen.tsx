@@ -11,11 +11,12 @@ import {
 } from "../../components";
 import { colors, spacing, typography } from "../../constants/theme";
 import { RootStackParamList } from "../../navigation/navigation.types";
-import { loginUser, registerUser } from "../../services/authService";
+import { useAuth } from "../../context/AuthContext";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Register">;
 
 export function RegisterScreen({ navigation }: Props) {
+  const { register } = useAuth();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,18 +34,11 @@ export function RegisterScreen({ navigation }: Props) {
       setIsLoading(true);
       setFormError(null);
 
-      await registerUser({
+      await register({
         fullName: fullName.trim(),
         email: email.trim(),
         password,
       });
-
-      await loginUser({
-        email: email.trim(),
-        password,
-      });
-
-      navigation.replace("MainApp");
     } catch (error) {
       const message =
         error instanceof Error

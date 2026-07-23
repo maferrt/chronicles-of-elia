@@ -23,6 +23,7 @@ import {
 
 import { RootNavigator } from "./src/navigation/RootNavigator";
 import { colors } from "./src/constants/theme";
+import { AuthProvider } from "./src/context/AuthContext";
 
 const appTheme = {
   ...DefaultTheme,
@@ -55,10 +56,12 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer theme={appTheme}>
-        <StatusBar style="light" />
-        <RootNavigator />
-      </NavigationContainer>
+      <AuthProvider>
+        <NavigationContainer theme={appTheme}>
+          <StatusBar style="light" />
+          <RootNavigator />
+        </NavigationContainer>
+      </AuthProvider>
     </SafeAreaProvider>
   );
 }

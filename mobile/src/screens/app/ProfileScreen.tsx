@@ -1,7 +1,4 @@
 import { StyleSheet, Text } from "react-native";
-import { StackActions } from "@react-navigation/native";
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import {
   AppScreen,
@@ -10,23 +7,14 @@ import {
   PrimaryButton,
   ScreenHeader,
 } from "../../components";
-import {
-  AppTabParamList,
-  RootStackParamList,
-} from "../../navigation/navigation.types";
 import { colors, spacing, typography } from "../../constants/theme";
-import { logoutUser } from "../../services/authService";
+import { useAuth } from "../../context/AuthContext";
 
-type Props = BottomTabScreenProps<AppTabParamList, "Profile">;
+export function ProfileScreen() {
+  const { logout, currentUser } = useAuth();
 
-export function ProfileScreen({ navigation }: Props) {
   async function handleLogout() {
-    await logoutUser();
-
-    const rootNavigation =
-      navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-
-    rootNavigation?.dispatch(StackActions.replace("Login"));
+    await logout();
   }
 
   return (
@@ -40,18 +28,26 @@ export function ProfileScreen({ navigation }: Props) {
       <EliaGuideCard
         eliaVariant="reading"
         title="Your current path"
-        message="You are currently following the Dev Path as an A2 Wanderer."
+        message={`Welcome, ${
+          currentUser?.fullName ?? "traveler"
+        }. You are currently following the Dev Path as an A2 Wanderer.`}
       />
 
       <ParchmentCard style={styles.card}>
         <Text style={styles.cardLabel}>Learning profile</Text>
+
         <Text style={styles.cardTitle}>Dev Path · A2 Wanderer</Text>
+
         <Text style={styles.cardText}>
           Goals: Technical Interviews, Remote Work
         </Text>
       </ParchmentCard>
 
-      <PrimaryButton title="Log out" variant="secondary" onPress={handleLogout} />
+      <PrimaryButton
+        title="Log out"
+        variant="secondary"
+        onPress={handleLogout}
+      />
     </AppScreen>
   );
 }
