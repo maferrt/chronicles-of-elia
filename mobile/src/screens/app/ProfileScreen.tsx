@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import {
   AppScreen,
@@ -8,21 +11,29 @@ import {
   PrimaryButton,
   ScreenHeader,
 } from "../../components";
+import {
+  AppTabParamList,
+  RootStackParamList,
+} from "../../navigation/navigation.types";
 import { colors, spacing, typography } from "../../constants/theme";
 import { useAuth } from "../../context/AuthContext";
 import { getMyLearningProfile } from "../../services/profileService";
 import { LearningProfile } from "../../types/profile.types";
 
-export function ProfileScreen() {
+type Props = BottomTabScreenProps<AppTabParamList, "Profile">;
+
+export function ProfileScreen({ navigation }: Props) {
   const { logout, currentUser } = useAuth();
 
   const [profile, setProfile] = useState<LearningProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [profileError, setProfileError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadProfile();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadProfile();
+    }, [])
+  );
 
   async function loadProfile() {
     try {
@@ -37,10 +48,18 @@ export function ProfileScreen() {
           ? error.message
           : "Unable to load your learning profile.";
 
+      setProfile(null);
       setProfileError(message);
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function handleOpenProfileSetup() {
+    const rootNavigation =
+      navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+
+    rootNavigation?.navigate("ProfileSetup");
   }
 
   async function handleLogout() {
@@ -77,34 +96,48 @@ export function ProfileScreen() {
       {!isLoading && profileError ? (
         <ParchmentCard style={styles.card}>
           <Text style={styles.cardLabel}>Learning profile</Text>
+
           <Text style={styles.cardTitle}>Profile not completed yet</Text>
+
           <Text style={styles.cardText}>
-            {profileError}. Soon, Elia will help you create your learning path.
+            Elia needs a few details to create your personalized learning path.
           </Text>
+
+          <PrimaryButton
+            title="Create learning profile"
+            onPress={handleOpenProfileSetup}
+          />
         </ParchmentCard>
       ) : null}
 
       {!isLoading && profile ? (
-        <ParchmentCard style={styles.card}>
-          <Text style={styles.cardLabel}>Learning profile</Text>
+        <>
+          <ParchmentCard style={styles.card}>
+            <Text style={styles.cardLabel}>Learning profile</Text>
 
-          <Text style={styles.cardTitle}>
-            {profile.profession} · {profile.englishLevelCode}{" "}
-            {profile.englishLevel}
-          </Text>
+            <Text style={styles.cardTitle}>
+              {profile.profession} · {profile.englishLevelCode}{" "}
+              {profile.englishLevel}
+            </Text>
 
-          <Text style={styles.cardText}>
-            Goals: {profile.learningGoals.join(", ")}
-          </Text>
+            <Text style={styles.cardText}>
+              Goals: {profile.learningGoals.join(", ")}
+            </Text>
 
-          <Text style={styles.cardText}>
-            Interests: {profile.interests.join(", ")}
-          </Text>
+            <Text style={styles.cardText}>
+              Interests: {profile.interests.join(", ")}
+            </Text>
 
-          {profile.bio ? (
-            <Text style={styles.bioText}>{profile.bio}</Text>
-          ) : null}
-        </ParchmentCard>
+            {profile.bio ? (
+              <Text style={styles.bioText}>{profile.bio}</Text>
+            ) : null}
+          </ParchmentCard>
+
+          <PrimaryButton
+            title="Edit learning profile"
+            onPress={handleOpenProfileSetup}
+          />
+        </>
       ) : null}
 
       <PrimaryButton

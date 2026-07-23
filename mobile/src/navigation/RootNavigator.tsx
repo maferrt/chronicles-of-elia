@@ -8,6 +8,7 @@ import { RegisterScreen } from "../screens/public/RegisterScreen";
 import { AppTabsNavigator } from "./AppTabsNavigator";
 import { colors } from "../constants/theme";
 import { useAuth } from "../context/AuthContext";
+import { ProfileSetupScreen } from "../screens/app/ProfileSetupScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -35,7 +36,10 @@ export function RootNavigator() {
       }}
     >
       {isAuthenticated ? (
-        <Stack.Screen name="MainApp" component={AppTabsNavigator} />
+        <>
+          <Stack.Screen name="MainApp" component={AppTabsNavigator} />
+          <Stack.Screen name="ProfileSetup" component={ProfileSetupScreen} />
+        </>
       ) : (
         <>
           <Stack.Screen name="Splash" component={SplashScreen} />
