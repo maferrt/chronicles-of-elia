@@ -1,4 +1,5 @@
-import { StyleSheet, View } from "react-native";
+import { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import {
@@ -8,12 +9,54 @@ import {
   ScreenHeader,
   TextField,
 } from "../../components";
-import { spacing } from "../../constants/theme";
+import { colors, spacing, typography } from "../../constants/theme";
 import { RootStackParamList } from "../../navigation/navigation.types";
+import { loginUser, registerUser } from "../../services/authService";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Register">;
 
 export function RegisterScreen({ navigation }: Props) {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [formError, setFormError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleRegister() {
+    if (!fullName.trim() || !email.trim() || !password.trim()) {
+      setFormError("Please complete all fields.");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setFormError(null);
+
+      await registerUser({
+        fullName: fullName.trim(),
+        email: email.trim(),
+        password,
+      });
+
+      await loginUser({
+        email: email.trim(),
+        password,
+      });
+
+      navigation.replace("MainApp");
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Unable to create account. Please try again.";
+
+      setFormError(message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <AppScreen scroll contentStyle={styles.container}>
       <ScreenHeader
@@ -25,25 +68,35 @@ export function RegisterScreen({ navigation }: Props) {
         <View style={styles.form}>
           <TextField
             label="Full name"
-            placeholder="María Fernanda Rodríguez"
+            value={fullName}
+            onChangeText={setFullName}
           />
 
           <TextField
             label="Email"
-            placeholder="mafer@test.com"
+            value={email}
+            onChangeText={setEmail}
             autoCapitalize="none"
             keyboardType="email-address"
           />
 
           <TextField
             label="Password"
-            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
             secureTextEntry
           />
 
+          {formError ? (
+            <View style={styles.errorBox}>
+              <Text style={styles.errorText}>{formError}</Text>
+            </View>
+          ) : null}
+
           <PrimaryButton
-            title="Create account"
-            onPress={() => navigation.replace("MainApp")}
+            title={isLoading ? "Creating account..." : "Create account"}
+            disabled={isLoading}
+            onPress={handleRegister}
           />
         </View>
       </ParchmentCard>
@@ -66,5 +119,16 @@ const styles = StyleSheet.create({
   },
   form: {
     gap: spacing.md,
+  },
+  errorBox: {
+    backgroundColor: "rgba(211, 150, 140, 0.22)",
+    borderWidth: 1,
+    borderColor: colors.dustyRose,
+    borderRadius: 16,
+    padding: spacing.md,
+  },
+  errorText: {
+    ...typography.body,
+    color: colors.textDark,
   },
 });

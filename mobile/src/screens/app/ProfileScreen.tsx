@@ -1,11 +1,36 @@
 import { StyleSheet, Text } from "react-native";
+import { StackActions } from "@react-navigation/native";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-import { AppScreen, EliaGuideCard, ParchmentCard, PrimaryButton, ScreenHeader } from "../../components";
+import {
+  AppScreen,
+  EliaGuideCard,
+  ParchmentCard,
+  PrimaryButton,
+  ScreenHeader,
+} from "../../components";
+import {
+  AppTabParamList,
+  RootStackParamList,
+} from "../../navigation/navigation.types";
 import { colors, spacing, typography } from "../../constants/theme";
+import { logoutUser } from "../../services/authService";
 
-export function ProfileScreen() {
+type Props = BottomTabScreenProps<AppTabParamList, "Profile">;
+
+export function ProfileScreen({ navigation }: Props) {
+  async function handleLogout() {
+    await logoutUser();
+
+    const rootNavigation =
+      navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+
+    rootNavigation?.dispatch(StackActions.replace("Login"));
+  }
+
   return (
-    <AppScreen scroll>
+    <AppScreen scroll contentStyle={styles.container}>
       <ScreenHeader
         eyebrow="Profile"
         title="Your Profile"
@@ -26,12 +51,15 @@ export function ProfileScreen() {
         </Text>
       </ParchmentCard>
 
-      <PrimaryButton title="Log out" variant="secondary" onPress={() => {}} />
+      <PrimaryButton title="Log out" variant="secondary" onPress={handleLogout} />
     </AppScreen>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingBottom: 120,
+  },
   card: {
     marginVertical: spacing.lg,
   },

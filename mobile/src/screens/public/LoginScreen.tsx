@@ -1,4 +1,5 @@
-import { StyleSheet, View } from "react-native";
+import { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import {
@@ -8,12 +9,47 @@ import {
   ScreenHeader,
   TextField,
 } from "../../components";
-import { spacing } from "../../constants/theme";
+import { colors, spacing, typography } from "../../constants/theme";
 import { RootStackParamList } from "../../navigation/navigation.types";
+import { loginUser } from "../../services/authService";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 export function LoginScreen({ navigation }: Props) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [formError, setFormError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleLogin() {
+    if (!email.trim() || !password.trim()) {
+      setFormError("Please enter your email and password.");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setFormError(null);
+
+      await loginUser({
+        email: email.trim(),
+        password,
+      });
+
+      navigation.replace("MainApp");
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Unable to log in. Please try again.";
+
+      setFormError(message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <AppScreen scroll contentStyle={styles.container}>
       <ScreenHeader
@@ -25,20 +61,29 @@ export function LoginScreen({ navigation }: Props) {
         <View style={styles.form}>
           <TextField
             label="Email"
-            placeholder="mafer@test.com"
+            value={email}
+            onChangeText={setEmail}
             autoCapitalize="none"
             keyboardType="email-address"
           />
 
           <TextField
             label="Password"
-            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
             secureTextEntry
           />
 
+          {formError ? (
+            <View style={styles.errorBox}>
+              <Text style={styles.errorText}>{formError}</Text>
+            </View>
+          ) : null}
+
           <PrimaryButton
-            title="Log in"
-            onPress={() => navigation.replace("MainApp")}
+            title={isLoading ? "Logging in..." : "Log in"}
+            disabled={isLoading}
+            onPress={handleLogin}
           />
         </View>
       </ParchmentCard>
@@ -61,5 +106,16 @@ const styles = StyleSheet.create({
   },
   form: {
     gap: spacing.md,
+  },
+  errorBox: {
+    backgroundColor: "rgba(211, 150, 140, 0.22)",
+    borderWidth: 1,
+    borderColor: colors.dustyRose,
+    borderRadius: 16,
+    padding: spacing.md,
+  },
+  errorText: {
+    ...typography.body,
+    color: colors.textDark,
   },
 });
